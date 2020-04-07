@@ -1,5 +1,12 @@
 from django.db import models
 
+RATES = (
+    (1, 'Poor'),
+    (2, 'Excellent'),
+   
+    
+
+)
 # Create your models here.
 class Book(models.Model) :
     title = models.CharField(max_length=100)
@@ -10,3 +17,16 @@ class Book(models.Model) :
     
     def __str__(self):
         return self.title
+
+class Rating(models.Model):
+    date = models.DateField("Rate Date")
+    rate  = models.IntegerField(
+        choices = RATES
+    )
+
+    book = models.ForeignKey(Book, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.get_rate_display()} on {self.date}"
+    class Meta:
+        ordering = ['-date']    
