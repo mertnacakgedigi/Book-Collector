@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import Book
+from .models import Book , Reader, Rating
 
 from .forms import RatingForm
 # Add the following import
@@ -17,10 +17,14 @@ def books_index(request):
   return render(request, 'books/index.html', { 'books': books })
 
 
+
 def books_detail(request, book_id):
   book = Book.objects.get(id=book_id)
+  noreader = Reader.objects.exclude(id__in = book.reader.all().values_list('id') )
   rating_form = RatingForm()
-  return render(request, 'books/detail.html', { 'book': book, 'rating_form' : rating_form })
+  return render(request, 'books/detail.html', { 'book': book, 
+  'rating_form' : rating_form,
+  'noreaders' : noreader})
 
 def add_rating(request, book_id):
   # create the ModelForm using the data in request.POST
@@ -33,3 +37,4 @@ def add_rating(request, book_id):
     new_adding.book_id = book_id
     new_adding.save()
   return redirect('detail', book_id=book_id)
+
