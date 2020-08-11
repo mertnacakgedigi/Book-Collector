@@ -3,18 +3,15 @@ from django.db import models
 RATES = (
     (1, 'Poor'),
     (2, 'Excellent'),
-   
-    
-
 )
-
 
 class Reader(models.Model):
     name = models.CharField(max_length=50)
     color = models.CharField(max_length=50)
     def __str__(self):
         return self.name
-# Create your models here.
+
+    
 class Book(models.Model) :
     title = models.CharField(max_length=100)
     author = models.CharField(max_length=100)
@@ -23,8 +20,6 @@ class Book(models.Model) :
     reader = models.ManyToManyField(Reader)
     def __str__(self):
         return self.title
-
-
 
 class Rating(models.Model):
     date = models.DateField("Rate Date")
@@ -38,5 +33,3 @@ class Rating(models.Model):
         return f"{self.get_rate_display()} on {self.date}"
     class Meta:
         ordering = ['-date']    
-
-
